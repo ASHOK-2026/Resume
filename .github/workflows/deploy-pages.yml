@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+# Request explicit write permission for workflow token so push is allowed.
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -14,7 +18,8 @@ jobs:
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer a repo secret PAT with write permission (create secret GH_PAGES_TOKEN)
+          github_token: ${{ secrets.GH_PAGES_TOKEN }}
           publish_dir: ./
           user_name: github-actions
           user_email: github-actions@github.com
